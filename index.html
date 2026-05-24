@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <title>Educational Card Kit & Admin ID Generator</title>
+  <meta name="description" content="Official administrative Student ID Card Generator and SheerID verification acceptability checklist guide for students and teachers.">
+  <meta name="keywords" content="Student ID Card Generator, University ID Card Maker, SheerID Guide, PVC Card Print Template">
+  
+  <!-- Unique descriptive ID for accessibility and browser tests -->
+  <meta id="app-version" content="educational-card-kit-v2.0">
+
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+  <!-- Ambient background design grids -->
+  <div class="bg-grid"></div>
+
+  <!-- PRINT-ONLY WRAPPER FOR PVC PRINTING -->
+  <div id="pvc-print-container" class="print-only">
+    <!-- Will contain exact duplicated card elements during window.print() -->
+  </div>
+
+  <div class="container main-app-content">
+    
+    <!-- HEADER HERO SECTION -->
+    <header>
+      <div class="badge-wrapper">
+        <div class="premium-badge">
+          <span class="badge-spark">✦</span> CAMPUS MANAGEMENT SUITE
+        </div>
+      </div>
+      <h1 id="main-title">Educational <span>Card Kit</span></h1>
+      <p class="subtitle">
+        Automated official ID Card Generator tools and academic proof documentation guide.
+      </p>
+
+      <!-- NAVIGATION TABS BETWEEN GUIDE & GENERATOR -->
+      <div class="app-nav-tabs">
+        <button class="nav-tab-btn active" id="tab-nav-guide" onclick="switchAppView('guide')">
+          📂 Verification Guide
+        </button>
+        <button class="nav-tab-btn" id="tab-nav-generator" onclick="switchAppView('generator')">
+          🛠️ ID Card Generator (Admin Tool)
+        </button>
+      </div>
+    </header>
+
+    <!-- VIEW A: VERIFICATION GUIDE SECTION -->
+    <section id="section-verification-guide" class="app-view-section active">
+      <!-- Interactive Filter & Search Controls -->
+      <div class="controls-wrapper" aria-label="Filters and Search Tools">
+        <!-- Search Input Container -->
+        <div class="search-container">
+          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input 
+            type="text" 
+            id="search-docs" 
+            class="search-input" 
+            placeholder="Document ka naam search karein..." 
+            aria-label="Search verification documents"
+          >
+        </div>
+
+        <!-- Categories Navigation Pills -->
+        <nav class="tab-filters" aria-label="Document Category Filter">
+          <button class="tab-btn active" data-target="all" id="btn-tab-all">
+            📂 All <span class="tab-count" id="count-all">10</span>
+          </button>
+          <button class="tab-btn" data-target="students" id="btn-tab-students">
+            🎓 Students <span class="tab-count" id="count-students">5</span>
+          </button>
+          <button class="tab-btn" data-target="teachers" id="btn-tab-teachers">
+            👩‍🏫 Teachers <span class="tab-count" id="count-teachers">5</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Grid for acceptable document cards -->
+      <div class="cards-grid" id="cards-container" role="region" aria-live="polite">
+        <!-- Cards loaded dynamically via app.js -->
+      </div>
+
+      <!-- Search Empty State -->
+      <div class="no-results" id="search-empty-state">
+        <div class="no-results-icon">🔍</div>
+        <h3>Kuch nahi mila!</h3>
+        <p>Aapke search query ke mutabiq koi document nahi mila. Dobara koshish karein.</p>
+      </div>
+    </section>
+
+    <!-- VIEW B: ADMIN ID CARD GENERATOR SECTION -->
+    <section id="section-id-generator" class="app-view-section">
+      <div class="generator-workspace-grid">
+        
+        <!-- Left Column: Admin Card Customizer Inputs -->
+        <div class="customizer-panel">
+          <h2 class="panel-title">🛠️ Card Configuration</h2>
+          <p class="panel-subtitle">Student ki details input karein. Card live preview me update hojayega.</p>
+          
+          <form class="customizer-form" id="id-generator-form" onsubmit="event.preventDefault();">
+            
+            <!-- University Name & Branding -->
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="input-uni-name">Institution Name</label>
+                <input type="text" id="input-uni-name" value="NEXUS METROPOLITAN UNIVERSITY" placeholder="e.g. Stanford University">
+              </div>
+              <div class="form-group">
+                <label for="input-academic-year">Academic Session / Term</label>
+                <input type="text" id="input-academic-year" value="Session 2025-26" placeholder="e.g. Session 2025-26 or Fall 2025">
+              </div>
+            </div>
+
+            <!-- Student Name & Student ID -->
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="input-student-name">Student Full Name</label>
+                <input type="text" id="input-student-name" value="Muhammad Hamza" placeholder="Full legal name">
+              </div>
+              <div class="form-group">
+                <label for="input-student-id">Student ID / Roll No</label>
+                <input type="text" id="input-student-id" value="NMU-2026-94812" placeholder="e.g. STU-88123-A">
+              </div>
+            </div>
+
+            <!-- Major/Department & Blood Group -->
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="input-department">Department / Major</label>
+                <input type="text" id="input-department" value="Software Engineering" placeholder="e.g. Computer Science">
+              </div>
+              <div class="form-group">
+                <label for="input-blood-group">Blood Group</label>
+                <select id="input-blood-group">
+                  <option value="A+">A+</option>
+                  <option value="B+">B+</option>
+                  <option value="O+" selected>O+</option>
+                  <option value="AB+">AB+</option>
+                  <option value="A-">A-</option>
+                  <option value="B-">B-</option>
+                  <option value="O-">O-</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Issue Date & Expiry Date -->
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="input-issue-date">Issue Date</label>
+                <input type="date" id="input-issue-date" value="2025-09-01">
+              </div>
+              <div class="form-group">
+                <label for="input-expiry-date">Expiry Date</label>
+                <input type="date" id="input-expiry-date" value="2029-06-30">
+              </div>
+            </div>
+
+            <!-- Image Uploaders -->
+            <div class="form-group-row uploaders-row">
+              <div class="form-group upload-box">
+                <label>Profile Photo</label>
+                <div class="upload-btn-wrapper">
+                  <button class="btn-upload">📷 Photo</button>
+                  <input type="file" id="upload-profile-photo" accept="image/*">
+                </div>
+                <span class="file-name-label" id="profile-photo-name">Default avatar</span>
+              </div>
+              
+              <div class="form-group upload-box">
+                <label>Uni Crest / Logo</label>
+                <div class="upload-btn-wrapper">
+                  <button class="btn-upload">🛡️ Logo</button>
+                  <input type="file" id="upload-uni-logo" accept="image/*">
+                </div>
+                <span class="file-name-label" id="uni-logo-name">Standard emblem</span>
+              </div>
+
+              <div class="form-group upload-box">
+                <label>Registrar Sign</label>
+                <div class="upload-btn-wrapper">
+                  <button class="btn-upload">✍️ Sign</button>
+                  <input type="file" id="upload-signature-photo" accept="image/*">
+                </div>
+                <span class="file-name-label" id="signature-photo-name">Standard sign</span>
+              </div>
+            </div>
+
+            <!-- Card Dimensions & Layout Selection -->
+            <div class="form-group-row">
+              <div class="form-group">
+                <label for="input-orientation">Card Layout Orientation</label>
+                <select id="input-orientation">
+                  <option value="landscape" selected>Horizontal (Landscape)</option>
+                  <option value="portrait">Vertical (Portrait)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="input-card-type">Card Design Type</label>
+                <select id="input-card-type">
+                  <option value="both" selected>Double-Sided (Details split Front & Back)</option>
+                  <option value="front">Single-Sided (All details on Front)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Template Theme Design Selection (10 Professional Variants) -->
+            <div class="form-group">
+              <label for="input-template-design">Template Theme Design Preset (10 Variants)</label>
+              <select id="input-template-design">
+                <option value="modern" selected>1. Modern Minimalist (Frosted Glass & Outfit Sans)</option>
+                <option value="classic">2. Classic Academic (Georgia Serif & Double Frame)</option>
+                <option value="cyber">3. Tech Cybernetic (Carbon Grid & Neon Glow)</option>
+                <option value="corporate">4. Corporate Elite (Gold Metallic Dividers)</option>
+                <option value="creative">5. Creative Fusion (Liquid Blur & Pastel Gradients)</option>
+                <option value="metro">6. Metro Transit (Bold Solid Header Stripe)</option>
+                <option value="slate">7. Metro Slate (High-Contrast Matte Left Border)</option>
+                <option value="vintage">8. Vintage Scholar (Parchment Base & Traditional Ink)</option>
+                <option value="eco">9. Eco Green Campus (Organic Soft-Leaf Accents)</option>
+                <option value="athletics">10. Athletic Pride (Dynamic Collegiate Varsity Stripe)</option>
+              </select>
+            </div>
+
+            <!-- Customizer Presets Theme & Hex Color Customizer -->
+            <div class="form-group-row">
+              <div class="form-group">
+                <label>Primary Brand Color (Hex)</label>
+                <div class="color-picker-input-wrap">
+                  <input type="color" id="input-primary-color" value="#0a192f">
+                  <input type="text" id="input-primary-hex" value="#0a192f" placeholder="#0a192f">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Secondary Brand Color (Hex)</label>
+                <div class="color-picker-input-wrap">
+                  <input type="color" id="input-secondary-color" value="#172a45">
+                  <input type="text" id="input-secondary-hex" value="#172a45" placeholder="#172a45">
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        
+        <!-- Right Column: Interactive ID Card 3D-Like Preview Workspace -->
+        <div class="preview-workspace">
+          <div class="workspace-header">
+            <h3 class="preview-title">📺 Card Live Preview</h3>
+            <span class="live-status">● Live syncing</span>
+          </div>
+
+          <!-- The Double-Sided Flipping Card Container -->
+          <div class="card-3d-wrapper">
+            <div class="card-flipper" id="interactive-card-flipper">
+              
+              <!-- CARD FRONT SIDE (Standard CR80 Dimension) -->
+              <div class="id-card-side card-front theme-blue" id="rendered-card-front">
+                <!-- Glowing Overlay Design -->
+                <div class="card-glow-overlay"></div>
+                <div class="card-security-seal"></div>
+                <div class="card-chip-symbol"></div>
+                
+                <!-- Front Header -->
+                <div class="id-card-header">
+                  <div class="uni-logo-icon" id="preview-uni-logo-wrap">
+                    <img id="preview-uni-logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0MCcgaGVpZ2h0PSc0MCcgdmlld0JveD0nMCAwIDQwIDQwJz48Y2lyY2xlIGN4PScyMCcgY3k9JzIwJyByPScxOCcgZmlsbD0nbm9uZScgc3Ryb2tlPSd3aGl0ZScgc3Ryb2tlLXdpZHRoPScyJy8+PHBhdGggZD0nTTIwLDEwIEwzMCwyNSBMMTAsMjUgWicgZmlsbD0nd2hpdGUnLz48L3N2Zz4=" alt="Emblem Logo">
+                  </div>
+                  <div class="uni-name-text" id="preview-uni-name">NEXUS METROPOLITAN UNIVERSITY</div>
+                </div>
+                
+                <!-- Front Body (Grid layout) -->
+                <div class="id-card-body">
+                  <!-- Left side: Photo & Signature Column -->
+                  <div class="photo-and-signature-column">
+                    <div class="student-photo-frame">
+                      <img id="preview-student-photo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMjAnIGhlaWdodD0nMTUwJyB2aWV3Qm94PScwIDAgMTIwIDE1MCc+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsbD0nIzFhMjMzYScvPjxwYXRoIGQ9J002MCA0MGEyMCAyMCAwIDEgMCAwIDQwIDIwIDIwIDAgMCAwIDUtNDB6bTAgNDhjLTIyIDAtNDAgMTItNDAgMjh2Nmg4MHYtNmMwLTE2LTE4LTI4LTQwLTI4eicgZmlsbD0nIzRjNWE4MCcvPjwvc3ZnPg==" alt="Student Profile Preview">
+                    </div>
+                    <div class="front-signature-wrap" id="front-signature-container">
+                      <span class="sig-label">REGISTRAR</span>
+                      <img id="preview-signature-front" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMDAnIGhlaWdodD0nMzAnIHZpZXdCb3g9JzAgMCAxMDAgMzAnPjxwYXRoIGQ9J00xMCwxNSBRMzAsNSA1MCwxNSBUOTAsMTUnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzIyMzM2Nicgc3Ryb2tlLXdpZHRoPScyJy8+PC9zdmc+" alt="Authorized Sign">
+                    </div>
+                  </div>
+                  
+                  <!-- Right side: Student credentials -->
+                  <div class="student-details-frame">
+                    <div class="detail-item">
+                      <span class="detail-label">STUDENT NAME</span>
+                      <span class="detail-value text-highlight" id="preview-student-name">Muhammad Hamza</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="detail-label">STUDENT ID</span>
+                      <span class="detail-value" id="preview-student-id">NMU-2026-94812</span>
+                    </div>
+                    <div class="detail-item">
+                      <span class="detail-label">DEPARTMENT</span>
+                      <span class="detail-value" id="preview-department">Software Engineering</span>
+                    </div>
+                  </div>
+
+                  <!-- Front-side QR wrap (Only visible in single-sided mode) -->
+                  <div class="front-qr-wrap" id="front-qr-container">
+                    <canvas id="autogen-qr-canvas-front" width="54" height="54" title="Campus ID QR Code"></canvas>
+                    <span class="qr-label">CAMPUS ID</span>
+                  </div>
+                </div>
+
+                <!-- Front Footer Bar -->
+                <div class="id-card-footer">
+                  <div class="card-meta-row">
+                    <div class="meta-item">
+                      <span class="meta-label">SESSION</span>
+                      <span class="meta-value" id="preview-academic-year">Session 2025-26</span>
+                    </div>
+                    <div class="meta-item">
+                      <span class="meta-label">BLOOD GRP</span>
+                      <span class="meta-value" id="preview-blood-group">O+</span>
+                    </div>
+                    <div class="meta-item">
+                      <span class="meta-label">EXPIRY</span>
+                      <span class="meta-value" id="preview-expiry-date">30-06-2029</span>
+                    </div>
+                  </div>
+                  <div class="card-status-badge">STUDENT</div>
+                </div>
+              </div>
+              
+              <!-- CARD BACK SIDE -->
+              <div class="id-card-side card-back theme-blue" id="rendered-card-back">
+                <div class="card-glow-overlay"></div>
+                
+                <!-- Back Top Bar -->
+                <div class="back-header">
+                  <div class="magnetic-strip"></div>
+                  <div class="security-signature-field">
+                    <span class="signature-label">AUTHORISED SIGNATURE</span>
+                    <div class="signature-img-wrap">
+                      <img id="preview-signature" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMDAnIGhlaWdodD0nMzAnIHZpZXdCb3g9JzAgMCAxMDAgMzAnPjxwYXRoIGQ9J00xMCwxNSBRMzAsNSA1MCwxNSBUOTAsMTUnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzIyMzM2Nicgc3Ryb2tlLXdpZHRoPScyJy8+PC9zdmc+" alt="Signature Seal">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Back Info Grid -->
+                <div class="back-body">
+                  <div class="rules-and-terms">
+                    <h5>TERMS & CONDITIONS:</h5>
+                    <p>1. This card remains the property of the issuing institution and is non-transferable.</p>
+                    <p>2. Loss of this card must be reported immediately to the campus administrative desk.</p>
+                    <p>3. Misuse of this card is subject to severe disciplinary code action.</p>
+                  </div>
+                  
+                  <!-- Dynamic Autogenerated QR Code Container -->
+                  <div class="qr-code-area">
+                    <canvas id="autogen-qr-canvas" width="70" height="70" title="Auto-generated Card ID QR"></canvas>
+                    <span class="qr-label">CAMPUS ID CODE</span>
+                  </div>
+                </div>
+
+                <!-- Back Footer -->
+                <div class="back-footer">
+                  <p>In Case of Emergency, Please Return to Campus Administration Block.</p>
+                  <p class="phone-label">Ph: +92 51 111-222-333 | web: www.nexus.edu.pk</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Controls to interact with preview card -->
+          <div class="workspace-action-buttons">
+            <button class="preview-action-btn btn-flip" id="btn-interactive-flip" onclick="toggleCardFlip()">
+              🔄 Flip Card Side
+            </button>
+            <button class="preview-action-btn btn-print" id="btn-interactive-print" onclick="triggerPvcCardPrint()">
+              🖨️ Print / Save PVC Card
+            </button>
+          </div>
+
+          <!-- Download Options Buttons Grid -->
+          <div class="download-options-container">
+            <span class="download-label-header">📥 EXPORT AS HIGH-RES IMAGE:</span>
+            <div class="download-buttons-grid">
+              <button class="download-btn btn-png" onclick="downloadCardImage('png')">
+                🖼️ Download PNG
+              </button>
+              <button class="download-btn btn-jpg" onclick="downloadCardImage('jpg')">
+                📷 Download JPG
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- DYNAMIC DETAIL VIEW MODAL DIALOG (From verification guide) -->
+    <dialog id="document-detail-modal" closedby="any" aria-labelledby="modal-title-header">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon" id="modal-doc-icon">🎓</div>
+          <div class="modal-header-text">
+            <h2 id="modal-title-header">Document Details</h2>
+            <span class="category-tag" id="modal-category-tag">Student</span>
+          </div>
+        </div>
+        <button class="close-btn" id="modal-close-btn" aria-label="Close details dialog">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body" id="modal-detail-content">
+        <!-- Dynamic guide detail details injected via app.js -->
+      </div>
+    </dialog>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy; 2026 <strong>Educational Card Kit</strong>. All rights reserved.</p>
+      <p>Premium administrative automation and design layouts for institutional workflows.</p>
+    </footer>
+
+  </div>
+
+  <!-- Client side logic -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,2949 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Cinzel:wght@500;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Space+Grotesk:wght@500;700&family=League+Spartan:wght@700;800&family=Special+Elite&family=Lexend:wght@400;600;700&family=Montserrat:wght@500;700;800&display=swap');
+
+/* ==========================================================================
+   DESIGN TOKENS & SYSTEM VARIABLES
+   ========================================================================== */
+:root {
+  /* Color Palette - HSL (Dark Mode Base) */
+  --bg-main: hsl(222, 25%, 5%);
+  --bg-card: hsla(222, 25%, 10%, 0.45);
+  --bg-card-hover: hsla(222, 25%, 15%, 0.65);
+  --bg-modal: hsla(222, 25%, 8%, 0.85);
+  
+  --border-light: hsla(222, 20%, 90%, 0.08);
+  --border-hover: hsla(222, 20%, 90%, 0.18);
+  --border-modal: hsla(222, 20%, 90%, 0.15);
+
+  --text-primary: hsl(210, 40%, 98%);
+  --text-secondary: hsl(215, 20%, 75%);
+  --text-muted: hsl(215, 12%, 55%);
+  --text-highlight: hsl(263, 100%, 75%);
+
+  /* Presets Theme Base Grains */
+  --student-primary: hsl(263, 90%, 65%);
+  --student-secondary: hsl(322, 85%, 60%);
+  --student-gradient: linear-gradient(135deg, var(--student-primary), var(--student-secondary));
+  --student-glow: hsla(263, 90%, 65%, 0.25);
+  --student-text: hsl(263, 100%, 80%);
+
+  --teacher-primary: hsl(165, 80%, 42%);
+  --teacher-secondary: hsl(195, 85%, 45%);
+  --teacher-gradient: linear-gradient(135deg, var(--teacher-primary), var(--teacher-secondary));
+  --teacher-glow: hsla(165, 80%, 42%, 0.25);
+  --teacher-text: hsl(165, 100%, 75%);
+
+  /* Typography */
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Interactive / Spacing */
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 9999px;
+  --transition-smooth: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-bounce: all 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+  --shadow-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  --max-width: 1200px;
+}
+
+/* ==========================================================================
+   RESET & SYSTEM BASE
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  padding: 2rem 1rem;
+}
+
+/* Ambient Glowing Background Blobs */
+body::before, body::after {
+  content: '';
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(120px);
+  opacity: 0.15;
+  transition: var(--transition-smooth);
+}
+
+body::before {
+  top: -10%;
+  left: -5%;
+  background: radial-gradient(circle, var(--student-primary), transparent 70%);
+}
+
+body::after {
+  bottom: 10%;
+  right: -5%;
+  background: radial-gradient(circle, var(--teacher-primary), transparent 70%);
+}
+
+.bg-grid {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(hsla(222, 20%, 90%, 0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.badge-wrapper {
+  display: inline-flex;
+  margin-bottom: 1rem;
+}
+
+.premium-badge {
+  background: hsla(263, 90%, 65%, 0.15);
+  border: 1px solid hsla(263, 90%, 65%, 0.3);
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--student-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 0 15px hsla(263, 90%, 65%, 0.1);
+  animation: pulse-glow 3s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px hsla(263, 90%, 65%, 0.1); border-color: hsla(263, 90%, 65%, 0.3); }
+  50% { box-shadow: 0 0 25px hsla(263, 90%, 65%, 0.25); border-color: hsla(263, 90%, 65%, 0.6); }
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, hsl(210, 40%, 98%) 30%, hsl(215, 30%, 75%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h1 span {
+  background: linear-gradient(135deg, var(--student-primary), var(--teacher-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 650px;
+  margin: 0 auto 1.5rem;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   APP NAVIGATION TABS
+   ========================================================================== */
+.app-nav-tabs {
+  display: inline-flex;
+  background: hsla(222, 25%, 8%, 0.7);
+  border: 1px solid var(--border-light);
+  padding: 0.4rem;
+  border-radius: 16px;
+  backdrop-filter: blur(8px);
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.nav-tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.nav-tab-btn:hover {
+  color: var(--text-primary);
+  background: hsla(222, 20%, 90%, 0.04);
+}
+
+.nav-tab-btn.active {
+  background: linear-gradient(135deg, hsla(263, 90%, 65%, 0.2), hsla(165, 80%, 42%, 0.2));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* App View Sections */
+.app-view-section {
+  display: none;
+  animation: fadeInView 0.45s ease-out;
+}
+
+.app-view-section.active {
+  display: block;
+}
+
+@keyframes fadeInView {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   VIEW A: VERIFICATION GUIDE CONTROLS & CARDS
+   ========================================================================== */
+.controls-wrapper {
+  background: hsla(222, 25%, 8%, 0.6);
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 1.25rem;
+  margin-bottom: 2.5rem;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-glow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .controls-wrapper {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.search-container {
+  position: relative;
+  flex: 1;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .search-container {
+    max-width: 380px;
+  }
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem 1.25rem 0.8rem 2.8rem;
+  background: hsla(222, 25%, 4%, 0.6);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--student-primary);
+  box-shadow: 0 0 15px hsla(263, 90%, 65%, 0.15);
+  background: hsla(222, 25%, 4%, 0.85);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  width: 18px;
+  height: 18px;
+  transition: var(--transition-smooth);
+}
+
+.search-input:focus + .search-icon {
+  color: var(--student-primary);
+}
+
+.tab-filters {
+  display: flex;
+  background: hsla(222, 25%, 4%, 0.5);
+  padding: 0.3rem;
+  border-radius: 14px;
+  border: 1px solid var(--border-light);
+  gap: 0.25rem;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.6rem 1.15rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: hsla(222, 20%, 90%, 0.04);
+}
+
+.tab-btn.active[data-target="all"] {
+  background: hsla(222, 20%, 90%, 0.1);
+  color: var(--text-primary);
+}
+
+.tab-btn.active[data-target="students"] {
+  background: var(--student-gradient);
+  color: #fff;
+  box-shadow: 0 4px 12px var(--student-glow);
+}
+
+.tab-btn.active[data-target="teachers"] {
+  background: var(--teacher-gradient);
+  color: #fff;
+  box-shadow: 0 4px 12px var(--teacher-glow);
+}
+
+.tab-count {
+  font-size: 0.75rem;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.1rem 0.4rem;
+  border-radius: 5px;
+}
+
+/* Document grid layout */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.75rem;
+  margin-bottom: 3.5rem;
+}
+
+.doc-card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  box-shadow: var(--shadow-glow);
+  cursor: pointer;
+  overflow: hidden;
+  transition: var(--transition-bounce);
+}
+
+.doc-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+}
+
+.doc-card.student-type:hover {
+  box-shadow: var(--shadow-glow), 0 0 20px hsla(263, 90%, 65%, 0.12);
+  border-color: hsla(263, 90%, 65%, 0.3);
+}
+
+.doc-card.teacher-type:hover {
+  box-shadow: var(--shadow-glow), 0 0 20px hsla(165, 80%, 42%, 0.12);
+  border-color: hsla(165, 80%, 42%, 0.3);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.card-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.student-type .card-icon-box {
+  background: hsla(263, 90%, 65%, 0.12);
+  border: 1px solid hsla(263, 90%, 65%, 0.2);
+  color: var(--student-text);
+}
+
+.teacher-type .card-icon-box {
+  background: hsla(165, 80%, 42%, 0.12);
+  border: 1px solid hsla(165, 80%, 42%, 0.2);
+  color: var(--teacher-text);
+}
+
+.category-tag {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-pill);
+}
+
+.student-type .category-tag {
+  background: hsla(263, 90%, 65%, 0.15);
+  color: var(--student-text);
+  border: 1px solid hsla(263, 90%, 65%, 0.2);
+}
+
+.teacher-type .category-tag {
+  background: hsla(165, 80%, 42%, 0.15);
+  color: var(--teacher-text);
+  border: 1px solid hsla(165, 80%, 42%, 0.2);
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.65rem;
+  color: var(--text-primary);
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.desc-en {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.desc-ur {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: block;
+  border-left: 2px solid var(--border-light);
+  padding-left: 0.65rem;
+}
+
+.card-action {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.student-type .card-action { color: var(--student-text); }
+.teacher-type .card-action { color: var(--teacher-text); }
+
+.card-action svg {
+  width: 14px;
+  height: 14px;
+  transition: var(--transition-bounce);
+}
+
+.doc-card:hover .card-action svg {
+  transform: translateX(4px);
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3.5rem 2rem;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-light);
+  border-radius: var(--radius-lg);
+  display: none;
+}
+
+/* ==========================================================================
+   VIEW B: ID CARD GENERATOR LAYOUTS
+   ========================================================================== */
+.generator-workspace-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+  margin-bottom: 3.5rem;
+  align-items: start;
+}
+
+@media (min-width: 992px) {
+  .generator-workspace-grid {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+
+/* Config panel form layouts */
+.customizer-panel {
+  background: hsla(222, 25%, 8%, 0.6);
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 2rem;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-glow);
+}
+
+.panel-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+}
+
+.panel-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.75rem;
+}
+
+.customizer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 576px) {
+  .form-group-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-group-row.uploaders-row {
+  grid-template-columns: 1fr 1fr;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.form-group label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group select {
+  padding: 0.75rem 1rem;
+  background: hsla(222, 25%, 4%, 0.6);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: var(--transition-smooth);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--student-primary);
+  background: hsla(222, 25%, 4%, 0.85);
+}
+
+/* Administrative file uploader wrapper hooks */
+.upload-box {
+  background: hsla(222, 25%, 4%, 0.4);
+  border: 1px dashed var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin-top: 0.25rem;
+}
+
+.btn-upload {
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+  background-color: hsla(222, 20%, 90%, 0.05);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.upload-btn-wrapper:hover .btn-upload {
+  background-color: hsla(222, 20%, 90%, 0.15);
+  border-color: var(--border-hover);
+}
+
+.upload-btn-wrapper input[type="file"] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.file-name-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+}
+
+/* Color theme palette selector layout */
+.theme-presets-picker {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.preset-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition-bounce);
+}
+
+.preset-btn:hover {
+  transform: scale(1.15);
+}
+
+.preset-btn.active {
+  border-color: #fff;
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Preview column container styles */
+.preview-workspace {
+  background: hsla(222, 25%, 8%, 0.6);
+  border: 1px solid var(--border-light);
+  border-radius: 24px;
+  padding: 2rem;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-glow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.workspace-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 0.75rem;
+}
+
+.preview-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.live-status {
+  font-size: 0.75rem;
+  color: var(--teacher-text);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* ==========================================================================
+   DOUBLE-SIDED 3D-FLIPPING CR80 CARD COMPONENT
+   ========================================================================== */
+/* Aspect Ratio CR80: 85.6mm wide, 53.98mm high (1.586 ratio). Screen mapping: 360px by 227px */
+.card-3d-wrapper {
+  perspective: 1000px;
+  width: 360px;
+  height: 227px;
+  margin-bottom: 2rem;
+  border-radius: 16px;
+}
+
+.card-flipper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Rotation toggle action class */
+.card-flipper.flipped {
+  transform: rotateY(180deg);
+}
+
+.id-card-side {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow: 
+    0 15px 35px rgba(0,0,0,0.5),
+    inset 0 1px 1px rgba(255,255,255,0.15);
+  font-family: var(--font-body);
+}
+
+.card-front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  background-color: hsl(220, 20%, 15%);
+}
+
+/* ==========================================================================
+   ID CARD GRAPHICS & THEME ACCENTS
+   ========================================================================== */
+/* Preset themes */
+.id-card-side.theme-blue {
+  background: linear-gradient(135deg, hsl(212, 60%, 14%) 0%, hsl(212, 65%, 7%) 100%);
+  border: 1.5px solid hsla(212, 80%, 45%, 0.25);
+}
+.id-card-side.theme-emerald {
+  background: linear-gradient(135deg, hsl(160, 60%, 10%) 0%, hsl(160, 65%, 5%) 100%);
+  border: 1.5px solid hsla(160, 80%, 35%, 0.25);
+}
+.id-card-side.theme-crimson {
+  background: linear-gradient(135deg, hsl(355, 60%, 14%) 0%, hsl(355, 65%, 7%) 100%);
+  border: 1.5px solid hsla(355, 80%, 45%, 0.25);
+}
+.id-card-side.theme-charcoal {
+  background: linear-gradient(135deg, hsl(220, 10%, 18%) 0%, hsl(220, 12%, 10%) 100%);
+  border: 1.5px solid hsla(220, 10%, 35%, 0.25);
+}
+
+/* Ambient glow and smart micro-chip graphics */
+.card-glow-overlay {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.08), transparent 50%);
+  pointer-events: none;
+}
+
+.card-chip-symbol {
+  position: absolute;
+  top: 3.5rem;
+  right: 1.25rem;
+  width: 32px;
+  height: 24px;
+  background: linear-gradient(135deg, hsl(45, 70%, 55%), hsl(45, 40%, 35%));
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.4);
+  opacity: 0.75;
+}
+
+/* Front Layout Structures */
+.id-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 0.5rem;
+  z-index: 2;
+}
+
+.uni-logo-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.uni-logo-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.uni-name-text {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
+}
+
+.card-security-seal {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 2.5rem;
+  width: 70px;
+  height: 70px;
+  border: 1px dashed rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.02), transparent 70%);
+}
+
+.card-security-seal::before {
+  content: '🛡️';
+  font-size: 1.5rem;
+  opacity: 0.06;
+}
+
+.id-card-body {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 0.85rem;
+  align-items: center;
+  margin-top: 0.65rem;
+  z-index: 2;
+}
+
+/* Photo box frames */
+.student-photo-frame {
+  width: 88px;
+  height: 110px;
+  background-color: hsla(222, 25%, 4%, 0.6);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.student-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Front side content fields */
+.student-details-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.detail-value {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 190px;
+}
+
+/* Special branding accents inside front values */
+.theme-blue .text-highlight { color: hsl(210, 100%, 80%); }
+.theme-emerald .text-highlight { color: hsl(160, 100%, 75%); }
+.theme-crimson .text-highlight { color: hsl(355, 100%, 80%); }
+.theme-charcoal .text-highlight { color: hsl(220, 100%, 85%); }
+
+.id-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  padding-top: 0.4rem;
+  margin-top: 0.5rem;
+  z-index: 2;
+}
+
+.card-meta-row {
+  display: flex;
+  gap: 0.85rem;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 0.42rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.meta-value {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.card-status-badge {
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.theme-blue .card-status-badge { background: hsla(210, 90%, 55%, 0.2); color: hsl(210, 100%, 75%); border: 1px solid hsla(210, 90%, 55%, 0.3); }
+.theme-emerald .card-status-badge { background: hsla(160, 90%, 42%, 0.2); color: hsl(160, 100%, 70%); border: 1px solid hsla(160, 90%, 42%, 0.3); }
+.theme-crimson .card-status-badge { background: hsla(355, 90%, 55%, 0.2); color: hsl(355, 100%, 75%); border: 1px solid hsla(355, 90%, 55%, 0.3); }
+.theme-charcoal .card-status-badge { background: hsla(220, 15%, 45%, 0.20); color: hsl(220, 10%, 85%); border: 1px solid hsla(220, 15%, 45%, 0.3); }
+
+/* Card Back Side layout styling */
+.magnetic-strip {
+  height: 28px;
+  background-color: hsl(220, 15%, 8%);
+  width: calc(100% + 2.5rem);
+  margin-left: -1.25rem;
+  margin-top: -0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.security-signature-field {
+  background: #fdfdfd;
+  height: 24px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+  position: relative;
+}
+
+.signature-label {
+  font-size: 0.38rem;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 0.05em;
+}
+
+.signature-img-wrap {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.signature-img-wrap img {
+  height: 85%;
+  max-width: 90px;
+  filter: contrast(150%) multiply;
+}
+
+.back-body {
+  display: grid;
+  grid-template-columns: 1fr 66px;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.rules-and-terms {
+  font-size: 0.36rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.rules-and-terms h5 {
+  font-size: 0.38rem;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+  color: var(--text-primary);
+}
+
+.qr-code-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.qr-code-area canvas {
+  background: white;
+  padding: 3px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.qr-label {
+  font-size: 0.38rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.back-footer {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 0.3rem;
+  text-align: center;
+  font-size: 0.38rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.back-footer .phone-label {
+  font-family: var(--font-mono);
+  font-size: 0.36rem;
+  margin-top: 0.1rem;
+}
+
+/* Preview Actions buttons layout */
+.workspace-action-buttons {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.preview-action-btn {
+  flex: 1;
+  border: none;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.8rem 1.25rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  transition: var(--transition-smooth);
+}
+
+.btn-flip {
+  background: hsla(222, 20%, 90%, 0.06);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+}
+
+.btn-flip:hover {
+  background: hsla(222, 20%, 90%, 0.15);
+  border-color: var(--border-hover);
+}
+
+.btn-print {
+  background: var(--student-gradient);
+  color: #fff;
+  box-shadow: 0 4px 15px var(--student-glow);
+}
+
+.btn-print:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--student-glow);
+}
+
+/* ==========================================================================
+   MODAL DETAILED DIALOGS (GLASSMORPHISM & starting-style)
+   ========================================================================== */
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: calc(100% - 2rem);
+  max-width: 580px;
+  background: var(--bg-modal);
+  border: 1px solid var(--border-modal);
+  border-radius: 28px;
+  padding: 2.25rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+  color: var(--text-primary);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 100;
+  outline: none;
+}
+
+dialog {
+  opacity: 0;
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 0.35s;
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-behavior: allow-discrete;
+}
+
+dialog[open] {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+
+  @starting-style {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
+
+dialog::backdrop {
+  background-color: rgba(4, 7, 20, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition:
+    display 0.35s allow-discrete,
+    overlay 0.35s allow-discrete,
+    background-color 0.35s ease-out,
+    backdrop-filter 0.35s ease-out;
+}
+
+dialog[open]::backdrop {
+  background-color: rgba(4, 7, 20, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  @starting-style {
+    background-color: rgba(4, 7, 20, 0);
+    backdrop-filter: blur(0px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  dialog {
+    transform: translate(-50%, -50%) !important;
+    transition-duration: 0.15s !important;
+  }
+  dialog[open] {
+    @starting-style {
+      transform: translate(-50%, -50%) !important;
+    }
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.modal-icon {
+  width: 48px;
+  height: 48px;
+  font-size: 1.6rem;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.student-modal .modal-icon {
+  background: hsla(263, 90%, 65%, 0.15);
+  border: 1px solid hsla(263, 90%, 65%, 0.3);
+  color: var(--student-text);
+}
+
+.teacher-modal .modal-icon {
+  background: hsla(165, 80%, 42%, 0.15);
+  border: 1px solid hsla(165, 80%, 42%, 0.3);
+  color: var(--teacher-text);
+}
+
+.modal-header-text h2 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.close-btn {
+  background: hsla(222, 20%, 90%, 0.05);
+  border: 1px solid var(--border-light);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: var(--transition-smooth);
+}
+
+.close-btn:hover {
+  background: hsla(222, 20%, 90%, 0.15);
+  color: var(--text-primary);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-desc-box {
+  background: hsla(222, 25%, 4%, 0.4);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.15rem;
+}
+
+.modal-desc-box .desc-en {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.modal-desc-box .desc-ur {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  border-left: 3px solid var(--student-primary);
+}
+
+.teacher-modal .modal-desc-box .desc-ur {
+  border-color: var(--teacher-primary);
+}
+
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.info-title {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.checklists-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 480px) {
+  .checklists-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.checklist-card {
+  background: hsla(222, 25%, 15%, 0.25);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.student-modal .checklist-card { border-left: 3px solid var(--student-primary); }
+.teacher-modal .checklist-card { border-left: 3px solid var(--teacher-primary); }
+
+.checklist-card h4 {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+}
+
+.checklist-card ul { list-style: none; }
+.checklist-card li {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.checklist-card li::before {
+  content: '✓';
+  font-weight: bold;
+}
+
+.student-modal .checklist-card li::before { color: var(--student-text); }
+.teacher-modal .checklist-card li::before { color: var(--teacher-text); }
+
+.verification-alert {
+  display: flex;
+  gap: 0.85rem;
+  background: hsla(263, 90%, 65%, 0.06);
+  border: 1px solid hsla(263, 90%, 65%, 0.12);
+  padding: 1.15rem;
+  border-radius: var(--radius-md);
+}
+
+.teacher-modal .verification-alert {
+  background: hsla(165, 80%, 42%, 0.06);
+  border: 1px solid hsla(165, 80%, 42%, 0.12);
+}
+
+.alert-text h5 {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+  color: var(--text-primary);
+}
+
+.alert-text p {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   FOOTER SECTION
+   ========================================================================== */
+footer {
+  text-align: center;
+  padding: 2.5rem 0 1rem;
+  border-top: 1px solid var(--border-light);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* ==========================================================================
+   STATE CLASSES & UTILITIES
+   ========================================================================== */
+.print-only {
+  display: none;
+}
+
+/* ==========================================================================
+   STATE-OF-THE-ART PVC PRINT LAYOUT (CR80 PHYSICAL ALIGNMENT)
+   ========================================================================== */
+@media print {
+  /* Hide the rest of the workspace and navigation completely */
+  html, body, .main-app-content, body::before, body::after, .bg-grid {
+    display: none !important;
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  #pvc-print-container {
+    background: white !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 20px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 30px !important;
+  }
+
+  /* Force exactly CR80 physical standards: 85.6mm x 53.98mm */
+  .pvc-card-print {
+    width: 85.6mm !important;
+    height: 53.98mm !important;
+    border-radius: 3.18mm !important; /* CR80 Standard corner radius */
+    border: none !important;
+    box-shadow: none !important;
+    position: relative !important;
+    overflow: hidden !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    padding: 4mm !important;
+    page-break-inside: avoid !important;
+  }
+
+  .pvc-card-print .uni-logo-icon {
+    width: 5.5mm !important;
+    height: 5.5mm !important;
+    border: 0.2mm solid rgba(255, 255, 255, 0.25) !important;
+  }
+
+  .pvc-card-print .card-security-seal {
+    width: 16mm !important;
+    height: 16mm !important;
+    right: 4mm !important;
+    bottom: 6mm !important;
+  }
+
+  /* Re-align margins specifically in print margins */
+  .pvc-card-print .uni-name-text {
+    font-size: 5pt !important;
+    max-width: 65mm !important;
+  }
+
+  .pvc-card-print .student-photo-frame {
+    width: 21mm !important;
+    height: 26.5mm !important;
+    border-radius: 1.5mm !important;
+    box-shadow: none !important;
+  }
+
+  .pvc-card-print .id-card-body {
+    grid-template-columns: 21mm 1fr !important;
+    gap: 2.5mm !important;
+    margin-top: 1.5mm !important;
+  }
+
+  .pvc-card-print .detail-label {
+    font-size: 3.8pt !important;
+  }
+
+  .pvc-card-print .detail-value {
+    font-size: 5.5pt !important;
+    max-width: 45mm !important;
+  }
+
+  .pvc-card-print .meta-label {
+    font-size: 3.5pt !important;
+  }
+
+  .pvc-card-print .meta-value {
+    font-size: 4.8pt !important;
+  }
+
+  .pvc-card-print .card-status-badge {
+    font-size: 4.5pt !important;
+    padding: 0.15mm 1mm !important;
+  }
+
+  /* Back specific layouts */
+  .pvc-card-print .magnetic-strip {
+    height: 6.5mm !important;
+    width: calc(100% + 8mm) !important;
+    margin-left: -4mm !important;
+    margin-top: -1mm !important;
+    margin-bottom: 1.5mm !important;
+  }
+
+  .pvc-card-print .security-signature-field {
+    height: 6mm !important;
+  }
+
+  .pvc-card-print .signature-label {
+    font-size: 3pt !important;
+  }
+
+  .pvc-card-print .back-body {
+    grid-template-columns: 1fr 16mm !important;
+    gap: 2mm !important;
+    margin: 1mm 0 !important;
+  }
+
+  .pvc-card-print .rules-and-terms {
+    font-size: 2.8pt !important;
+    line-height: 1.3 !important;
+  }
+
+  .pvc-card-print .rules-and-terms h5 {
+    font-size: 3pt !important;
+    margin-bottom: 0.4mm !important;
+  }
+
+  .pvc-card-print .qr-code-area canvas {
+    width: 15mm !important;
+    height: 15mm !important;
+    padding: 0.5mm !important;
+  }
+
+  .pvc-card-print .qr-label {
+    font-size: 3pt !important;
+  }
+
+  .pvc-card-print .back-footer {
+    font-size: 3pt !important;
+    padding-top: 0.6mm !important;
+  }
+
+  .pvc-card-print .back-footer .phone-label {
+    font-size: 2.8pt !important;
+  }
+}
+
+/* ==========================================================================
+   HEX COLOR PICKER CONTROL PANELS
+   ========================================================================== */
+.color-picker-input-wrap {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.color-picker-input-wrap input[type="color"] {
+  width: 44px;
+  height: 38px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  padding: 1px;
+}
+
+.color-picker-input-wrap input[type="text"] {
+  flex: 1;
+}
+
+/* ==========================================================================
+   PORTRAIT OVERRIDES & FLEXIBLE HEX BINDINGS
+   ========================================================================== */
+/* Dynamically bind primary and secondary colors using inline CSS property values */
+.id-card-side {
+  background: linear-gradient(135deg, var(--card-primary-color, hsl(212, 60%, 14%)) 0%, var(--card-secondary-color, hsl(212, 65%, 7%)) 100%) !important;
+  border-color: var(--card-primary-color, hsla(212, 80%, 45%, 0.25)) !important;
+}
+
+/* Landscape/Portrait Wrapper Dimension adjustments */
+.card-3d-wrapper.layout-portrait {
+  width: 227px;
+  height: 360px;
+}
+
+/* Portrait Specific Element Alignments (Front side) */
+.layout-portrait .id-card-body {
+  grid-template-columns: 1fr !important;
+  justify-items: center;
+  text-align: center;
+  margin-top: 0.45rem;
+  gap: 0.4rem;
+}
+
+.layout-portrait .student-photo-frame {
+  width: 78px;
+  height: 98px;
+  margin: 0 auto;
+}
+
+.layout-portrait .student-details-frame {
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.layout-portrait .detail-item {
+  align-items: center;
+}
+
+.layout-portrait .detail-value {
+  text-align: center;
+  max-width: 190px;
+}
+
+.layout-portrait .card-meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.2rem;
+  width: 100%;
+}
+
+.layout-portrait .meta-item {
+  align-items: center;
+}
+
+.layout-portrait .id-card-footer {
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.layout-portrait .card-status-badge {
+  width: 100%;
+  text-align: center;
+  padding: 0.1rem 0;
+}
+
+.layout-portrait .card-chip-symbol {
+  top: 3rem;
+  right: 0.65rem;
+  width: 22px;
+  height: 18px;
+}
+
+.layout-portrait .card-security-seal {
+  right: 50%;
+  bottom: 35%;
+  transform: translateX(50%);
+  width: 60px;
+  height: 60px;
+}
+
+/* Portrait Specific Element Alignments (Back side) */
+.layout-portrait .back-body {
+  grid-template-columns: 1fr !important;
+  text-align: center;
+  justify-items: center;
+  gap: 0.4rem;
+  margin: 0.35rem 0;
+}
+
+.layout-portrait .rules-and-terms {
+  font-size: 0.32rem;
+  line-height: 1.3;
+}
+
+.layout-portrait .rules-and-terms h5 {
+  margin-bottom: 0.1rem;
+}
+
+.layout-portrait .qr-code-area {
+  margin-top: 0.15rem;
+}
+
+/* Hide back elements if card sides is set to front-only */
+.hide-back-side {
+  display: none !important;
+}
+
+/* ==========================================================================
+   PVC PRINT OVERRIDES FOR PORTRAIT MODE (CR80 PHYSICAL STANDARD)
+   ========================================================================== */
+@media print {
+  #pvc-print-container.layout-portrait {
+    flex-direction: row !important;
+    gap: 15mm !important;
+  }
+
+  .pvc-card-print.layout-portrait {
+    width: 53.98mm !important;
+    height: 85.6mm !important;
+    padding: 3mm !important;
+    border-radius: 3.18mm !important;
+    background: linear-gradient(135deg, var(--card-primary-color, #0a192f) 0%, var(--card-secondary-color, #172a45) 100%) !important;
+  }
+
+  .pvc-card-print.layout-portrait .uni-name-text {
+    max-width: 48mm !important;
+    font-size: 4.8pt !important;
+  }
+
+  .pvc-card-print.layout-portrait .uni-logo-icon {
+    width: 5mm !important;
+    height: 5mm !important;
+  }
+
+  .pvc-card-print.layout-portrait .student-photo-frame {
+    width: 19mm !important;
+    height: 24mm !important;
+    border-radius: 1.2mm !important;
+  }
+
+  .pvc-card-print.layout-portrait .id-card-body {
+    grid-template-columns: 1fr !important;
+    gap: 1.2mm !important;
+    margin-top: 1mm !important;
+    justify-items: center !important;
+  }
+
+  .pvc-card-print.layout-portrait .detail-label {
+    font-size: 3.5pt !important;
+  }
+
+  .pvc-card-print.layout-portrait .detail-value {
+    font-size: 5pt !important;
+    max-width: 46mm !important;
+  }
+
+  .pvc-card-print.layout-portrait .card-meta-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
+    gap: 0.8mm !important;
+    width: 100% !important;
+  }
+
+  .pvc-card-print.layout-portrait .meta-label {
+    font-size: 3pt !important;
+  }
+
+  .pvc-card-print.layout-portrait .meta-value {
+    font-size: 4.5pt !important;
+  }
+
+  .pvc-card-print.layout-portrait .id-card-footer {
+    flex-direction: column !important;
+    gap: 0.8mm !important;
+  }
+
+  .pvc-card-print.layout-portrait .card-status-badge {
+    width: 100% !important;
+    font-size: 4.2pt !important;
+    text-align: center !important;
+    padding: 0.15mm 0 !important;
+  }
+
+  .pvc-card-print.layout-portrait .card-chip-symbol {
+    top: 22mm !important;
+    right: 2mm !important;
+    width: 5mm !important;
+    height: 4mm !important;
+  }
+
+  .pvc-card-print.layout-portrait .card-security-seal {
+    width: 14mm !important;
+    height: 14mm !important;
+    right: 50% !important;
+    bottom: 35% !important;
+    transform: translateX(50%) !important;
+  }
+
+  /* Back specific portrait overrides */
+  .pvc-card-print.layout-portrait .magnetic-strip {
+    width: calc(100% + 6mm) !important;
+    margin-left: -3mm !important;
+  }
+
+  .pvc-card-print.layout-portrait .security-signature-field {
+    height: 5.5mm !important;
+  }
+
+  .pvc-card-print.layout-portrait .back-body {
+    grid-template-columns: 1fr !important;
+    gap: 1.2mm !important;
+    justify-items: center !important;
+  }
+
+  .pvc-card-print.layout-portrait .rules-and-terms {
+    font-size: 2.5pt !important;
+  }
+
+  .pvc-card-print.layout-portrait .qr-code-area canvas {
+    width: 14mm !important;
+    height: 14mm !important;
+  }
+}
+
+/* ==========================================================================
+   IMAGE EXPORT & DOWNLOAD BUTTON STYLES
+   ========================================================================== */
+.download-options-container {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  align-items: flex-start;
+}
+
+.download-label-header {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.download-buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.download-btn {
+  border: none;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.7rem 1.15rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: var(--transition-smooth);
+}
+
+.download-btn.btn-png {
+  background: hsla(222, 20%, 90%, 0.05);
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+}
+
+.download-btn.btn-png:hover {
+  background: hsla(222, 20%, 90%, 0.15);
+  border-color: var(--border-hover);
+}
+
+.download-btn.btn-jpg {
+  background: linear-gradient(135deg, hsla(165, 80%, 42%, 0.15), hsla(195, 85%, 45%, 0.15));
+  border: 1px solid hsla(165, 80%, 42%, 0.25);
+  color: var(--teacher-text);
+}
+
+.download-btn.btn-jpg:hover {
+  background: linear-gradient(135deg, hsla(165, 80%, 42%, 0.25), hsla(195, 85%, 45%, 0.25));
+  border-color: hsla(165, 80%, 42%, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(165, 80, 42, 0.1);
+}
+
+/* ==========================================================================
+   SINGLE-SIDED CARD TEMPLATE STYLES (ALL DETAILS ON FRONT)
+   ========================================================================== */
+.front-signature-wrap,
+.front-qr-wrap {
+  display: none; /* Hidden by default in Double-Sided layout */
+}
+
+.photo-and-signature-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  align-items: center;
+  width: 100%;
+}
+
+.front-signature-wrap {
+  background: #ffffff;
+  border-radius: 4px;
+  height: 18px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.35rem;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.front-signature-wrap .sig-label {
+  font-size: 0.32rem;
+  font-weight: 700;
+  color: #777;
+  letter-spacing: 0.02em;
+}
+
+.front-signature-wrap img {
+  height: 90%;
+  max-width: 48px;
+  filter: contrast(120%) multiply;
+}
+
+.front-qr-wrap {
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.front-qr-wrap canvas {
+  background: white;
+  padding: 2px;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* LANDSCAPE SINGLE-SIDED LAYOUT APPLICATION */
+.layout-single-side .front-signature-wrap,
+.layout-single-side .front-qr-wrap {
+  display: flex;
+}
+
+.layout-single-side .id-card-body {
+  grid-template-columns: 88px 1fr 66px !important;
+  gap: 0.75rem !important;
+  align-items: center !important;
+}
+
+/* PORTRAIT SINGLE-SIDED LAYOUT APPLICATION */
+.layout-portrait.layout-single-side .id-card-body {
+  grid-template-columns: 1fr !important;
+  justify-items: center !important;
+  gap: 0.3rem !important;
+}
+
+.layout-portrait.layout-single-side .photo-and-signature-column {
+  flex-direction: row !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
+  justify-content: center !important;
+}
+
+.layout-portrait.layout-single-side .front-signature-wrap {
+  width: 80px !important;
+  height: 20px !important;
+}
+
+.layout-portrait.layout-single-side .front-qr-wrap {
+  flex-direction: row !important;
+  gap: 0.4rem !important;
+  width: 100% !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-top: 0.1rem;
+}
+
+.layout-portrait.layout-single-side .front-qr-wrap canvas {
+  width: 44px !important;
+  height: 44px !important;
+  padding: 2px !important;
+}
+
+/* ==========================================================================
+   PVC PRINT SPECIFIC ALIGNMENTS FOR SINGLE-SIDED CARD
+   ========================================================================== */
+@media print {
+  /* Horizontal Single-Sided printable card overrides */
+  .pvc-card-print.layout-single-side .id-card-body {
+    grid-template-columns: 21mm 1fr 16mm !important;
+    gap: 2mm !important;
+    align-items: center !important;
+  }
+
+  .pvc-card-print.layout-single-side .front-signature-wrap {
+    height: 4.2mm !important;
+    border-radius: 0.8mm !important;
+  }
+
+  .pvc-card-print.layout-single-side .front-signature-wrap .sig-label {
+    font-size: 2.8pt !important;
+  }
+
+  .pvc-card-print.layout-single-side .front-qr-wrap canvas {
+    width: 13mm !important;
+    height: 13mm !important;
+    padding: 0.4mm !important;
+  }
+
+  /* Vertical Single-Sided printable card overrides */
+  .pvc-card-print.layout-portrait.layout-single-side .id-card-body {
+    grid-template-columns: 1fr !important;
+    gap: 1.2mm !important;
+    justify-items: center !important;
+  }
+
+  .pvc-card-print.layout-portrait.layout-single-side .photo-and-signature-column {
+    flex-direction: row !important;
+    gap: 1.8mm !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .pvc-card-print.layout-portrait.layout-single-side .front-signature-wrap {
+    width: 18mm !important;
+    height: 4.8mm !important;
+  }
+
+  .pvc-card-print.layout-portrait.layout-single-side .front-qr-wrap {
+    flex-direction: row !important;
+    gap: 1.2mm !important;
+    width: 100% !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .pvc-card-print.layout-portrait.layout-single-side .front-qr-wrap canvas {
+    width: 11mm !important;
+    height: 11mm !important;
+  }
+}
+
+/* ==========================================================================
+   THE 10 PROFESSIONAL DESIGN VARIANT TEMPLATES (STRUCTURAL & TYPOGRAPHIC OVERRIDES)
+   ========================================================================== */
+
+/* ==========================================
+   1. MODERN MINIMALIST (`.design-modern`)
+   ========================================== */
+.design-modern {
+  font-family: 'Outfit', sans-serif !important;
+  background: rgba(10, 25, 47, 0.45) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+}
+
+.design-modern.card-back {
+  background: rgba(10, 25, 47, 0.55) !important;
+}
+
+.design-modern .student-photo-frame {
+  border-radius: 12px !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25) !important;
+}
+
+.design-modern .detail-value {
+  font-weight: 600 !important;
+}
+
+/* ==========================================
+   2. CLASSIC ACADEMIC (`.design-classic`)
+   ========================================== */
+.design-classic {
+  font-family: 'Playfair Display', 'Georgia', serif !important;
+  background: linear-gradient(135deg, hsl(212, 60%, 15%) 0%, hsl(212, 70%, 8%) 100%) !important;
+  border: 4px double #d4af37 !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Landscape flipped column structure: Photo right, details left */
+.design-classic.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 1fr 90px !important;
+  direction: rtl !important;
+  gap: 1.25rem !important;
+}
+
+.design-classic.card-front:not(.layout-portrait) .id-card-body > * {
+  direction: ltr !important; /* Reset text direction inside columns */
+}
+
+/* Circular Portrait Frame */
+.design-classic .student-photo-frame {
+  border-radius: 50% !important;
+  border: 3px double #d4af37 !important;
+  aspect-ratio: 1 / 1 !important;
+  width: 90px !important;
+  height: 90px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4) !important;
+}
+
+.design-classic .uni-name-text {
+  font-family: 'Cinzel', serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  font-size: 0.68rem !important;
+  color: #f3e5ab !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3) !important;
+  padding-bottom: 3px;
+}
+
+.design-classic .detail-label {
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic !important;
+  font-weight: 600 !important;
+  color: #d4af37 !important;
+}
+
+.design-classic .detail-value {
+  font-family: 'Playfair Display', serif !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  font-size: 0.78rem !important;
+}
+
+.design-classic .text-highlight {
+  color: #f3e5ab !important;
+}
+
+.design-classic.card-back {
+  background: linear-gradient(135deg, hsl(212, 70%, 10%) 0%, hsl(212, 75%, 6%) 100%) !important;
+  border: 4px double #d4af37 !important;
+}
+
+.design-classic .rules-and-terms h5 {
+  font-family: 'Cinzel', serif !important;
+  color: #f3e5ab !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.05em !important;
+}
+
+.design-classic .rules-and-terms p {
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-size: 0.48rem !important;
+}
+
+.design-classic .signature-label,
+.design-classic .qr-label,
+.design-classic .back-footer {
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic !important;
+  color: #f3e5ab !important;
+}
+
+.design-classic .card-status-badge {
+  font-family: 'Cinzel', serif !important;
+  background: rgba(212, 175, 55, 0.15) !important;
+  color: #f3e5ab !important;
+  border: 1px solid #d4af37 !important;
+  border-radius: 0px !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Portrait adjustments for classic */
+.design-classic.layout-portrait .id-card-body {
+  grid-template-columns: 1fr !important;
+  justify-items: center !important;
+  text-align: center !important;
+}
+
+.design-classic.layout-portrait .student-details-frame {
+  align-items: center !important;
+}
+
+.design-classic.layout-portrait .detail-item {
+  align-items: center !important;
+}
+
+/* ==========================================
+   3. TECH CYBERNETIC (`.design-cyber`)
+   ========================================== */
+.design-cyber {
+  font-family: 'JetBrains Mono', monospace !important;
+  background-color: #050811 !important;
+  background-image: 
+    linear-gradient(rgba(0, 242, 254, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 254, 0.02) 1px, transparent 1px) !important;
+  background-size: 10px 10px !important;
+  border: 2px solid var(--card-primary-color, #00f2fe) !important;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.8),
+    0 0 15px rgba(0, 242, 254, 0.25) !important;
+}
+
+/* Hexagonal Portrait Photo Frame */
+.design-cyber .student-photo-frame {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%) !important;
+  border-radius: 0px !important;
+  border: none !important;
+  background: var(--card-primary-color, #00f2fe) !important;
+  padding: 1px !important;
+}
+
+.design-cyber .student-photo-frame img {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%) !important;
+}
+
+/* Technical square data brackets inside lists */
+.design-cyber .detail-item {
+  border-left: 2px solid var(--card-primary-color, #00f2fe) !important;
+  padding-left: 0.5rem !important;
+  margin-bottom: 0.15rem !important;
+}
+
+.design-cyber .detail-label {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: var(--card-primary-color, #00f2fe) !important;
+  font-size: 0.44rem !important;
+  letter-spacing: 0.1em !important;
+}
+
+.design-cyber .detail-value {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: #ffffff !important;
+  font-size: 0.72rem !important;
+}
+
+.design-cyber .detail-value::before {
+  content: "[" !important;
+  color: var(--card-primary-color, #00f2fe) !important;
+  margin-right: 2px !important;
+}
+
+.design-cyber .detail-value::after {
+  content: "]" !important;
+  color: var(--card-primary-color, #00f2fe) !important;
+  margin-left: 2px !important;
+}
+
+.design-cyber .text-highlight {
+  color: #00f2fe !important;
+}
+
+.design-cyber .uni-name-text {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.15em !important;
+  font-size: 0.58rem !important;
+  text-shadow: 0 0 5px rgba(0, 242, 254, 0.6) !important;
+}
+
+.design-cyber.card-back {
+  background-color: #03050a !important;
+  background-image: 
+    linear-gradient(rgba(0, 242, 254, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 254, 0.015) 1px, transparent 1px) !important;
+  background-size: 10px 10px !important;
+  border: 2px solid var(--card-primary-color, #00f2fe) !important;
+}
+
+.design-cyber .rules-and-terms h5 {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: var(--card-primary-color, #00f2fe) !important;
+  font-size: 0.6rem !important;
+}
+
+.design-cyber .rules-and-terms p {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 0.44rem !important;
+}
+
+.design-cyber .qr-code-area {
+  border: 1px solid var(--card-primary-color, #00f2fe) !important;
+  padding: 4px !important;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.2) !important;
+}
+
+.design-cyber .signature-label,
+.design-cyber .qr-label,
+.design-cyber .back-footer {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: var(--card-primary-color, #00f2fe) !important;
+}
+
+.design-cyber .card-status-badge {
+  font-family: 'JetBrains Mono', monospace !important;
+  background: var(--card-primary-color, #00f2fe) !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  border-radius: 4px !important;
+  font-size: 0.52rem !important;
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.4) !important;
+}
+
+/* ==========================================
+   4. CORPORATE ELITE (`.design-corporate`)
+   ========================================== */
+.design-corporate {
+  font-family: 'Montserrat', sans-serif !important;
+  background: linear-gradient(135deg, #111827 0%, #1f2937 100%) !important;
+  border: 2px solid #d4af37 !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Full Width Solid Gold Header Block */
+.design-corporate .id-card-header {
+  background: linear-gradient(90deg, #d4af37 0%, #f3e5ab 100%) !important;
+  margin: -1.25rem -1.25rem 0.6rem !important;
+  padding: 0.75rem 1.25rem !important;
+  border-bottom: none !important;
+  border-radius: 14px 14px 0 0 !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.design-corporate .uni-name-text {
+  color: #111827 !important;
+  font-weight: 800 !important;
+  font-size: 0.62rem !important;
+  letter-spacing: 0.08em !important;
+}
+
+.design-corporate .uni-logo-icon {
+  border-color: #111827 !important;
+  background: #111827 !important;
+}
+
+/* Sharp, Square Photo Frame */
+.design-corporate .student-photo-frame {
+  border-radius: 0px !important;
+  border: 1.5px solid #d4af37 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.design-corporate .detail-label {
+  color: #9ca3af !important;
+  font-weight: 600 !important;
+  font-size: 0.46rem !important;
+}
+
+.design-corporate .detail-value {
+  color: #ffffff !important;
+  font-size: 0.74rem !important;
+  font-weight: 700 !important;
+}
+
+.design-corporate .text-highlight {
+  color: #f3e5ab !important;
+}
+
+.design-corporate.card-back {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+  border: 2px solid #d4af37 !important;
+}
+
+.design-corporate.card-back .magnetic-strip {
+  margin-top: -0.75rem !important;
+  background: #111827 !important;
+  height: 24px !important;
+  border-bottom: 2px solid #d4af37 !important;
+}
+
+.design-corporate .signature-label,
+.design-corporate .qr-label,
+.design-corporate .back-footer {
+  font-family: 'Montserrat', sans-serif !important;
+  color: #d4af37 !important;
+  font-weight: 600 !important;
+}
+
+.design-corporate .rules-and-terms h5 {
+  color: #f3e5ab !important;
+  font-weight: 700 !important;
+}
+
+.design-corporate .card-status-badge {
+  background: #d4af37 !important;
+  color: #111827 !important;
+  font-weight: 800 !important;
+  border-radius: 2px !important;
+}
+
+/* ==========================================
+   5. CREATIVE FUSION (`.design-creative`)
+   ========================================== */
+.design-creative {
+  font-family: 'Space Grotesk', sans-serif !important;
+  background: linear-gradient(135deg, #3b0764 0%, #1e1b4b 50%, #030712 100%) !important;
+  border: 1.5px solid rgba(244, 114, 182, 0.3) !important;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.5),
+    0 0 25px rgba(244, 114, 182, 0.15) !important;
+  border-radius: 24px !important; /* Ultra-rounded */
+}
+
+/* Background gradient orb glow overlays */
+.design-creative .card-glow-overlay {
+  display: block !important;
+  background: radial-gradient(circle at 10% 20%, rgba(244, 114, 182, 0.15) 0%, transparent 60%) !important;
+}
+
+/* Circular profile photo with neon border */
+.design-creative .student-photo-frame {
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1 !important;
+  width: 86px !important;
+  height: 86px !important;
+  border: 2px solid #f472b6 !important;
+  box-shadow: 
+    0 0 15px rgba(244, 114, 182, 0.4),
+    0 4px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+.design-creative .uni-name-text {
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 0.65rem !important;
+  letter-spacing: 0.05em !important;
+  background: linear-gradient(90deg, #f472b6 0%, #818cf8 100%);
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.design-creative .detail-label {
+  font-family: 'Space Grotesk', sans-serif !important;
+  color: #f472b6 !important;
+  font-size: 0.45rem !important;
+  letter-spacing: 0.05em !important;
+}
+
+.design-creative .detail-value {
+  font-family: 'Space Grotesk', sans-serif !important;
+  color: #ffffff !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+}
+
+.design-creative .text-highlight {
+  color: #c084fc !important;
+}
+
+.design-creative.card-back {
+  background: linear-gradient(135deg, #1e1b4b 0%, #030712 100%) !important;
+  border-radius: 24px !important;
+  border: 1.5px solid rgba(244, 114, 182, 0.3) !important;
+}
+
+.design-creative .rules-and-terms h5 {
+  color: #f472b6 !important;
+  font-weight: 700 !important;
+}
+
+.design-creative .rules-and-terms p {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.design-creative .card-status-badge {
+  background: linear-gradient(90deg, #f472b6, #818cf8) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 12px !important;
+  font-size: 0.52rem !important;
+}
+
+.design-creative .qr-code-area {
+  border: 1.5px solid #818cf8 !important;
+  border-radius: 10px !important;
+  padding: 4px !important;
+}
+
+/* ==========================================
+   6. METRO TRANSIT (`.design-metro`)
+   ========================================== */
+.design-metro {
+  font-family: 'League Spartan', sans-serif !important;
+  background: #0f1016 !important;
+  border: 2px solid #27272a !important;
+  padding-left: 2.25rem !important; /* Make room for rotated left banner */
+  border-radius: 12px !important;
+}
+
+.design-metro.card-back {
+  padding-left: 2.25rem !important;
+  background: #0f1016 !important;
+  border: 2px solid #27272a !important;
+}
+
+/* Hide standard top header entirely for subway vibe */
+.design-metro .id-card-header {
+  display: none !important;
+}
+
+/* Landscape Left vertical block banner */
+.design-metro::before {
+  content: "CAMPUS PASS" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 28px !important;
+  height: 100% !important;
+  background: var(--card-primary-color, #ef4444) !important;
+  color: #ffffff !important;
+  font-family: 'League Spartan', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 0.6rem !important;
+  letter-spacing: 0.25em !important;
+  writing-mode: vertical-rl !important;
+  text-orientation: mixed !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 5 !important;
+  text-transform: uppercase !important;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Landscape layout: Place logo and uni text inside details */
+.design-metro.card-front:not(.layout-portrait) .photo-and-signature-column {
+  margin-top: 0.5rem !important;
+}
+
+/* Raw rectangular photo frame */
+.design-metro .student-photo-frame {
+  border-radius: 2px !important;
+  border: 2px solid #3f3f46 !important;
+  width: 82px !important;
+  height: 105px !important;
+}
+
+.design-metro .detail-label {
+  font-family: 'League Spartan', sans-serif !important;
+  color: #a1a1aa !important;
+  font-size: 0.48rem !important;
+  font-weight: 700 !important;
+}
+
+.design-metro .detail-value {
+  font-family: 'League Spartan', sans-serif !important;
+  color: #ffffff !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+
+.design-metro .text-highlight {
+  color: var(--card-primary-color, #ef4444) !important;
+}
+
+/* Portrait adaptation of Metro vertical bar */
+.design-metro.layout-portrait {
+  padding-left: 1.25rem !important;
+  padding-top: 2.25rem !important;
+}
+
+.design-metro.layout-portrait.card-back {
+  padding-left: 1.25rem !important;
+  padding-top: 2.25rem !important;
+}
+
+.design-metro.layout-portrait::before {
+  writing-mode: horizontal-tb !important;
+  width: 100% !important;
+  height: 28px !important;
+  top: 0 !important;
+  left: 0 !important;
+  font-size: 0.65rem !important;
+}
+
+.design-metro .card-status-badge {
+  font-family: 'League Spartan', sans-serif !important;
+  background: #27272a !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  border: 1px solid #3f3f46 !important;
+  border-radius: 2px !important;
+}
+
+/* ==========================================
+   7. METRO SLATE (`.design-slate`)
+   ========================================== */
+.design-slate {
+  font-family: 'Montserrat', sans-serif !important;
+  background: #111318 !important;
+  /* Thick accent border on left edge only */
+  border-left: 6px solid var(--card-primary-color, #f59e0b) !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-radius: 8px !important;
+}
+
+.design-slate.card-back {
+  background: #111318 !important;
+  border-left: 6px solid var(--card-primary-color, #f59e0b) !important;
+  border-top: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+  border-radius: 8px !important;
+}
+
+/* Centered photo stacked layout */
+.design-slate.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 1fr !important;
+  justify-items: center !important;
+  text-align: center !important;
+  gap: 0.4rem !important;
+  margin-top: 0.25rem !important;
+}
+
+.design-slate.card-front:not(.layout-portrait) .photo-and-signature-column {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 1rem !important;
+}
+
+.design-slate .student-photo-frame {
+  width: 68px !important;
+  height: 85px !important;
+  margin: 0 auto !important;
+  border-radius: 6px !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.design-slate.card-front:not(.layout-portrait) .front-signature-wrap {
+  display: none !important; /* Hide front signature in stacked horizontal for spacing */
+}
+
+.design-slate.card-front:not(.layout-portrait) .student-details-frame {
+  align-items: center !important;
+  flex-direction: row !important;
+  justify-content: center !important;
+  gap: 1rem !important;
+  flex-wrap: wrap !important;
+}
+
+.design-slate.card-front:not(.layout-portrait) .detail-item {
+  align-items: center !important;
+}
+
+.design-slate .detail-label {
+  color: #6b7280 !important;
+  font-size: 0.44rem !important;
+}
+
+.design-slate .detail-value {
+  color: #e5e7eb !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+}
+
+.design-slate .uni-name-text {
+  font-family: 'Montserrat', sans-serif !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  text-transform: uppercase !important;
+  font-size: 0.58rem !important;
+}
+
+.design-slate .text-highlight {
+  color: var(--card-primary-color, #f59e0b) !important;
+}
+
+.design-slate .card-status-badge {
+  background: rgba(245, 158, 11, 0.1) !important;
+  color: var(--card-primary-color, #f59e0b) !important;
+  border: 1px solid var(--card-primary-color, #f59e0b) !important;
+  border-radius: 20px !important;
+}
+
+/* Stacked portrait adjustments for Slate */
+.design-slate.layout-portrait .id-card-body {
+  grid-template-columns: 1fr !important;
+  justify-items: center !important;
+  text-align: center !important;
+}
+
+.design-slate.layout-portrait .student-photo-frame {
+  width: 78px !important;
+  height: 98px !important;
+}
+
+.design-slate.layout-portrait .student-details-frame {
+  align-items: center !important;
+}
+
+.design-slate.layout-portrait .detail-item {
+  align-items: center !important;
+}
+
+/* ==========================================
+   8. VINTAGE SCHOLAR (`.design-vintage`)
+   ========================================== */
+.design-vintage {
+  font-family: 'Special Elite', monospace !important;
+  background-color: #fdfaf2 !important;
+  background-image: radial-gradient(#e6deb8 1px, transparent 1px) !important;
+  background-size: 8px 8px !important;
+  border: 2px solid #5c4033 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+.design-vintage.card-back {
+  background-color: #fdfaf2 !important;
+  background-image: radial-gradient(#e6deb8 1px, transparent 1px) !important;
+  background-size: 8px 8px !important;
+  border: 2px solid #5c4033 !important;
+}
+
+/* Elegant inset paper border */
+.design-vintage::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 5px !important;
+  left: 5px !important;
+  right: 5px !important;
+  bottom: 5px !important;
+  border: 1px solid rgba(92, 64, 51, 0.3) !important;
+  pointer-events: none !important;
+  border-radius: 12px !important;
+  z-index: 10 !important;
+}
+
+/* Scalloped Postage Stamp Photo Frame */
+.design-vintage .student-photo-frame {
+  border-radius: 0px !important;
+  border: 2px solid #5c4033 !important;
+  box-shadow: none !important;
+  outline: 4px dashed #fdfaf2 !important;
+  outline-offset: -3px !important;
+  background: #5c4033 !important;
+}
+
+.design-vintage .uni-name-text,
+.design-vintage .detail-value,
+.design-vintage .meta-value,
+.design-vintage .card-title,
+.design-vintage .rules-and-terms h5,
+.design-vintage .rules-and-terms p,
+.design-vintage .signature-label,
+.design-vintage .qr-label,
+.design-vintage .back-footer {
+  color: #2b1f14 !important;
+  font-family: 'Special Elite', monospace !important;
+}
+
+.design-vintage .detail-label,
+.design-vintage .meta-label {
+  color: #5c4033 !important;
+  font-weight: 700 !important;
+  font-family: 'Georgia', serif !important;
+}
+
+.design-vintage .text-highlight {
+  color: #000000 !important;
+  font-weight: 700 !important;
+}
+
+.design-vintage .id-card-header {
+  border-bottom: 1.5px solid rgba(92, 64, 51, 0.2) !important;
+}
+
+.design-vintage .id-card-footer {
+  border-top: 1.5px solid rgba(92, 64, 51, 0.2) !important;
+}
+
+.design-vintage .back-footer {
+  border-top: 1.5px solid rgba(92, 64, 51, 0.2) !important;
+}
+
+.design-vintage .card-status-badge {
+  font-family: 'Special Elite', monospace !important;
+  background: rgba(92, 64, 51, 0.1) !important;
+  color: #5c4033 !important;
+  border: 1px solid #5c4033 !important;
+  border-radius: 0px !important;
+}
+
+.design-vintage .front-signature-wrap img,
+.design-vintage .signature-img-wrap img {
+  filter: sepia(1) contrast(1.5) !important;
+}
+
+/* ==========================================
+   9. ECO GREEN CAMPUS (`.design-eco`)
+   ========================================== */
+.design-eco {
+  font-family: 'Lexend', sans-serif !important;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+  border: 2px solid #166534 !important;
+  box-shadow: 0 12px 25px rgba(22, 101, 52, 0.15) !important;
+  border-radius: 18px 6px 18px 6px !important; /* Asymmetric botanical corners */
+}
+
+.design-eco.card-back {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important;
+  border: 2px solid #166534 !important;
+  border-radius: 18px 6px 18px 6px !important;
+}
+
+/* Asymmetric leaf-shaped portrait frame */
+.design-eco .student-photo-frame {
+  border-radius: 16px 0 16px 0 !important;
+  border: 2.5px solid #166534 !important;
+  box-shadow: 0 4px 10px rgba(22, 101, 52, 0.2) !important;
+}
+
+.design-eco .uni-name-text,
+.design-eco .detail-value,
+.design-eco .meta-value,
+.design-eco .card-title,
+.design-eco .rules-and-terms h5,
+.design-eco .rules-and-terms p,
+.design-eco .signature-label,
+.design-eco .qr-label,
+.design-eco .back-footer {
+  color: #14532d !important;
+  font-family: 'Lexend', sans-serif !important;
+}
+
+.design-eco .detail-label,
+.design-eco .meta-label {
+  color: #16a34a !important;
+  font-weight: 600 !important;
+}
+
+.design-eco .text-highlight {
+  color: #052e16 !important;
+  font-weight: 700 !important;
+}
+
+.design-eco .id-card-header {
+  border-bottom: 1px solid rgba(22, 101, 52, 0.15) !important;
+}
+
+.design-eco .id-card-footer {
+  border-top: 1px solid rgba(22, 101, 52, 0.15) !important;
+}
+
+.design-eco .back-footer {
+  border-top: 1px solid rgba(22, 101, 52, 0.15) !important;
+}
+
+.design-eco .card-status-badge {
+  background: #166534 !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
+}
+
+/* ==========================================
+   10. ATHLETIC PRIDE (`.design-athletics`)
+   ========================================== */
+.design-athletics {
+  font-family: 'League Spartan', sans-serif !important;
+  background-color: #0c0e12 !important;
+  background-image: 
+    linear-gradient(115deg, transparent 65%, rgba(239, 68, 68, 0.08) 65%, rgba(239, 68, 68, 0.08) 75%, transparent 75%),
+    linear-gradient(115deg, transparent 80%, rgba(239, 68, 68, 0.08) 80%, rgba(239, 68, 68, 0.08) 90%, transparent 90%) !important;
+  border: 3px solid var(--card-primary-color, #ef4444) !important;
+}
+
+.design-athletics.card-back {
+  background-color: #0c0e12 !important;
+  background-image: 
+    linear-gradient(115deg, transparent 65%, rgba(239, 68, 68, 0.08) 65%, rgba(239, 68, 68, 0.08) 75%, transparent 75%),
+    linear-gradient(115deg, transparent 80%, rgba(239, 68, 68, 0.08) 80%, rgba(239, 68, 68, 0.08) 90%, transparent 90%) !important;
+  border: 3px solid var(--card-primary-color, #ef4444) !important;
+}
+
+/* Sporty skewed photo crop frame */
+.design-athletics .student-photo-frame {
+  transform: skewX(-8deg) !important;
+  border: 2.5px solid var(--card-primary-color, #ef4444) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6) !important;
+  background: #181c24 !important;
+}
+
+/* Un-skew photo image inside to avoid face distortion */
+.design-athletics .student-photo-frame img {
+  transform: skewX(8deg) scale(1.15) !important;
+}
+
+.design-athletics .uni-name-text {
+  font-family: Impact, 'Arial Narrow Bold', sans-serif !important;
+  font-style: italic !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.72rem !important;
+  color: #ffffff !important;
+}
+
+.design-athletics .detail-label {
+  font-family: 'League Spartan', sans-serif !important;
+  color: #6b7280 !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  font-size: 0.48rem !important;
+}
+
+.design-athletics .detail-value {
+  font-family: 'League Spartan', sans-serif !important;
+  font-style: italic !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  font-size: 0.8rem !important;
+  text-transform: uppercase !important;
+}
+
+.design-athletics .text-highlight {
+  color: var(--card-primary-color, #ef4444) !important;
+}
+
+.design-athletics .card-status-badge {
+  font-family: Impact, sans-serif !important;
+  background: var(--card-primary-color, #ef4444) !important;
+  color: #ffffff !important;
+  border-radius: 0px !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 0.05em !important;
+  font-style: italic !important;
+}
+
+.design-athletics .rules-and-terms h5 {
+  font-family: Impact, sans-serif !important;
+  color: var(--card-primary-color, #ef4444) !important;
+  font-style: italic !important;
+  font-size: 0.65rem !important;
+}
+
+.design-athletics .rules-and-terms p {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
