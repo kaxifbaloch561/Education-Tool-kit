@@ -1945,34 +1945,153 @@ footer {
 }
 
 /* LANDSCAPE SINGLE-SIDED LAYOUT APPLICATION */
+.layout-single-side.id-card-side {
+  padding: 0.9rem 1rem !important; /* Compact padding to prevent vertical clipping */
+}
+
 .layout-single-side .front-signature-wrap,
 .layout-single-side .front-qr-wrap {
   display: flex;
 }
 
 .layout-single-side .id-card-body {
-  grid-template-columns: 88px 1fr 66px !important;
-  gap: 0.75rem !important;
+  grid-template-columns: 82px 1fr 58px !important; /* Highly optimized 3-column split */
+  gap: 0.6rem !important;
   align-items: center !important;
 }
 
+.layout-single-side .student-photo-frame {
+  width: 80px !important;
+  height: 100px !important;
+}
+
+.layout-single-side .front-qr-wrap canvas {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+.layout-single-side .detail-value {
+  font-size: 0.65rem !important; /* Slightly scaled down text value to prevent overflow */
+  max-width: 140px !important; /* Ellipsis safeguard for long names */
+}
+
+.layout-single-side .detail-label {
+  font-size: 0.44rem !important;
+}
+
+/* Template-Specific Single-Sided Column Specificity Overrides */
+.design-classic.layout-single-side.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 58px 1fr 86px !important; /* classic flipped column fit */
+  direction: ltr !important;
+}
+
+.design-classic.layout-single-side .student-photo-frame {
+  width: 82px !important;
+  height: 82px !important;
+}
+
+.design-cyber.layout-single-side.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 82px 1fr 56px !important;
+  gap: 0.5rem !important;
+}
+
+.design-corporate.layout-single-side.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 82px 1fr 56px !important;
+  gap: 0.5rem !important;
+}
+
+.design-creative.layout-single-side.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 80px 1fr 56px !important;
+  gap: 0.5rem !important;
+}
+
+.design-metro.layout-single-side.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 78px 1fr 50px !important; /* compact metro transit fit */
+  gap: 0.4rem !important;
+}
+.design-metro.layout-single-side.card-front:not(.layout-portrait) .student-photo-frame {
+  width: 76px !important;
+  height: 96px !important;
+}
+.design-metro.layout-single-side.card-front:not(.layout-portrait) .front-qr-wrap canvas {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.design-slate.layout-single-side.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 78px 1fr 54px !important; /* slate stacked turns into neat 3-column in single-sided */
+  justify-items: start !important;
+  text-align: left !important;
+  gap: 0.5rem !important;
+}
+.design-slate.layout-single-side.card-front:not(.layout-portrait) .student-details-frame {
+  align-items: flex-start !important;
+  flex-direction: column !important;
+  gap: 0.25rem !important;
+}
+.design-slate.layout-single-side.card-front:not(.layout-portrait) .detail-item {
+  align-items: flex-start !important;
+}
+.design-slate.layout-single-side.card-front:not(.layout-portrait) .student-photo-frame {
+  width: 74px !important;
+  height: 92px !important;
+}
+
+.design-vintage.layout-single-side.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 80px 1fr 56px !important;
+  gap: 0.5rem !important;
+}
+
+.design-eco.layout-single-side.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 80px 1fr 56px !important;
+  gap: 0.5rem !important;
+}
+
+.design-athletics.layout-single-side.card-front:not(.layout-portrait) .id-card-body {
+  grid-template-columns: 78px 1fr 52px !important;
+  gap: 0.45rem !important;
+}
+.design-athletics.layout-single-side.card-front:not(.layout-portrait) .student-photo-frame {
+  width: 76px !important;
+  height: 94px !important;
+}
+
 /* PORTRAIT SINGLE-SIDED LAYOUT APPLICATION */
+.layout-portrait.layout-single-side.id-card-side {
+  padding: 0.75rem 0.9rem !important; /* highly optimized portrait single-sided card padding */
+}
+
 .layout-portrait.layout-single-side .id-card-body {
   grid-template-columns: 1fr !important;
   justify-items: center !important;
-  gap: 0.3rem !important;
+  gap: 0.25rem !important;
 }
 
 .layout-portrait.layout-single-side .photo-and-signature-column {
   flex-direction: row !important;
-  gap: 0.75rem !important;
+  gap: 0.6rem !important;
   width: 100% !important;
   justify-content: center !important;
+  align-items: center !important;
+}
+
+.layout-portrait.layout-single-side .student-photo-frame {
+  width: 72px !important;
+  height: 90px !important;
 }
 
 .layout-portrait.layout-single-side .front-signature-wrap {
-  width: 80px !important;
+  width: 74px !important;
   height: 20px !important;
+}
+
+.layout-portrait.layout-single-side .student-details-frame {
+  gap: 0.2rem !important;
+}
+
+.layout-portrait.layout-single-side .detail-value {
+  font-size: 0.62rem !important;
+  max-width: 150px !important;
 }
 
 .layout-portrait.layout-single-side .front-qr-wrap {
@@ -1981,12 +2100,12 @@ footer {
   width: 100% !important;
   justify-content: center !important;
   align-items: center !important;
-  margin-top: 0.1rem;
+  margin-top: 0.05rem;
 }
 
 .layout-portrait.layout-single-side .front-qr-wrap canvas {
-  width: 44px !important;
-  height: 44px !important;
+  width: 40px !important;
+  height: 40px !important;
   padding: 2px !important;
 }
 
